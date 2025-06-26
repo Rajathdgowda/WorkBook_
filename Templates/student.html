@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='uploads/student.css') }}">
+    <title>{{ student.name }}'s Profile</title>
+    
+</head>
+<body>
+
+<h1>{{ student.name }}</h1>
+<p>Email: {{ student.email }}</p>
+<p>Phone: {{ student.phone }}</p>
+<p>Course: {{ student.course }}</p>
+<a href="/">Back to Home</a>
+<form method="POST">
+
+    <h3>Document Checklist</h3>
+    <div class="checklist">
+        <div class="checklist-row">
+            {% for field in ['passport', 'marks_10th', 'marks_12th', 'degree_cert', 'masters_cert',
+                             'ielts', 'resume', 'sop', 'bank_statement', 'experience',
+                             'lor1', 'lor2', 'individual_markscard', 'consolidated_markscard',
+                             'passport_size_photo'] %}
+                <label>
+                    <input type="checkbox" name="{{ field }}" {% if student[field] %}checked{% endif %}> 
+                    {{ field.replace('_', ' ').title() }}
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <h3>Academic & Fee Details</h3>
+    <div class="form-section">
+
+        <div class="form-row">
+            <label for="board_10th">10th Board:</label>
+            <select name="board_10th" id="board_10th">
+                {% for board in ['Select Board', 'State Board', 'CBSE', 'ICSE', 'NIOS'] %}
+                    <option value="{{ board }}" {% if student.board_10th == board %}selected{% endif %}>{{ board }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="percent_10th">10th % / CGPA:</label>
+            <input type="number" name="percent_10th" id="percent_10th" value="{{ student.percent_10th }}">
+        </div>
+
+        <div class="form-row">
+            <label for="board_12th">12th Board:</label>
+            <select name="board_12th" id="board_12th">
+                {% for board in ['Select Board', 'State Board', 'CBSE', 'ICSE', 'NIOS'] %}
+                    <option value="{{ board }}" {% if student.board_12th == board %}selected{% endif %}>{{ board }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="percent_12th">12th % / CGPA:</label>
+            <input type="number" name="percent_12th" id="percent_12th" value="{{ student.percent_12th }}">
+        </div>
+
+        <div class="form-row">
+            <label for="english_12th">12th English Marks:</label>
+            <input type="number" name="english_12th" id="english_12th" value="{{ student.english_12th }}">
+        </div>
+
+        <div class="form-row">
+            <label for="cgpa">Degree CGPA / %:</label>
+            <input type="number" name="cgpa" id="cgpa" value="{{ student.cgpa }}">
+        </div>
+
+        <div class="form-row">
+            <label for="course_name">Course Name:</label>
+            <input type="text" name="course_name" id="course_name" value="{{ student.course_name }}">
+        </div>
+
+        <div class="form-row">
+            <label for="degree_name">Degree Name:</label>
+            <input type="text" name="degree_name" id="degree_name" value="{{ student.degree_name }}">
+        </div>
+
+        <div class="form-row">
+            <label for="college_name">College Name:</label>
+            <input type="text" name="college_name" id="college_name" value="{{ student.college_name }}">
+        </div>
+
+        <div class="form-row">
+            <label for="paid_amount">Paid Amount (₹):</label>
+            <input type="number" name="paid_amount" id="paid_amount" value="{{ student.paid_amount }}">
+        </div>
+
+        <div class="form-row">
+            <label for="due_amount">Due Amount (₹):</label>
+            <input type="number" name="due_amount" id="due_amount" value="{{ student.due_amount }}">
+        </div>
+        <input type="submit" value="Save All">
+    </div>
+
+    <h3>Admin Notes with Calendar</h3>
+    <div id="note-calendar-wrapper">
+        {% for note in student.note_entries or [] %}
+        <div class="note-entry">
+            <input type="date" name="note_date[]" value="{{ note.date }}">
+            <textarea name="note_text[]">{{ note.text }}</textarea>
+            <button type="button" onclick="removeNoteEntry(this)">🗑</button>
+        </div>
+        {% endfor %}
+        {% if not student.note_entries %}
+        <div class="note-entry">
+            <input type="date" name="note_date[]">
+            <textarea name="note_text[]"></textarea>
+            <button type="button" onclick="removeNoteEntry(this)">🗑</button>
+        </div>
+        {% endif %}
+    </div>
+
+    <button type="button" onclick="addNoteEntry()">+ Add More Notes</button><br><br>
+
+    <input type="submit" value="Save All">
+
+</form>
+
+<a href="/">Back to Home</a>
+
+<script>
+function addNoteEntry() {
+    const wrapper = document.getElementById('note-calendar-wrapper');
+    const entry = document.createElement('div');
+    entry.className = 'note-entry';
+    entry.innerHTML = `
+        <input type="date" name="note_date[]">
+        <textarea name="note_text[]"></textarea>
+        <button type="button" onclick="removeNoteEntry(this)">🗑</button>`;
+    wrapper.appendChild(entry);
+}
+function removeNoteEntry(btn) {
+    const entry = btn.parentElement;
+    entry.remove();
+}
+</script>
+
+</body>
+</html>

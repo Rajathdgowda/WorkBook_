@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='uploads/dashboard.css') }}">
+    <title>Student Dashboard</title>
+</head>
+<body>
+    <h1>All Student Profiles</h1>
+    <a href="/create">Add New Student</a>
+    <ul>
+        {% for student in students %}
+        <li>
+            <strong>{{ student.name }}</strong> - {{ student.course }}
+            <a href="/student/{{ student._id }}">View</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <header>
+  <h1>Student Dashboard</h1>
+  {% if session.admin %}
+  <div class="logout-btn">
+    Logged in as {{ session.admin }} | <a href="{{ url_for('logout') }}">Logout</a>
+  </div>
+  {% endif %}
+</header>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+Flask==2.3.2
+Flask-PyMongo==2.3.0
+gunicorn==20.1.0
+pymongo==4.6.1
+python-dotenv==1.0.1
+Werkzeug==2.3.7

@@ -1,0 +1,70 @@
+/* Reset and base dark layout */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #f1f5f9;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Form container */
+form {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Center page title above the form */
+
+
+h1 {
+  text-align:start;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="file"] {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.6rem 0 1.2rem 0;
+  background: #1e293b;
+  color: #f1f5f9;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #60a5fa;
+  outline: none;
+}
+
+/* Submit button */
+input[type="submit"] {
+  width: 100%;
+  padding: 0.8rem;
+  background: #3b82f6;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background: #2563eb;
+}
