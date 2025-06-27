@@ -15,7 +15,7 @@ app.config['MONGO_URI'] = os.getenv("MONGO_URI")
 
 mongo = PyMongo(app)
 
-UPLOAD_FOLDER = 'Static/uploads/'
+UPLOAD_FOLDER = 'static/uploads/'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
