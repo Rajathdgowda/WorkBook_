@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
-app.config['MONGO_URI'] = "mongodb+srv://rajathda:Sp99l0ZXuszijwar@cluster0.x9apgd4.mongodb.net/letzstudy?retryWrites=true&w=majority"
+app.config['MONGO_URI'] = "mongodb+srv://rajathda:Sp99l0ZXuszijwar@cluster0.x9apgd4.mongodb.net/letzstudy?retryWrites=true&w=majority&tls=true"
 
 load_dotenv()
 
@@ -15,7 +15,7 @@ app.config['MONGO_URI'] = os.getenv("MONGO_URI")
 
 mongo = PyMongo(app)
 
-UPLOAD_FOLDER = 'Static/uploads/'
+UPLOAD_FOLDER = 'static/uploads/'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -32,6 +32,15 @@ def login():
         else:
             return render_template('login.html', error="Invalid credentials")
     return render_template('login.html')
+
+@app.route('/dashboard')
+def dashboard():
+    month_filter = request.args.get('month')
+    if month_filter:
+        students = mongo.db.students.find({'month': month_filter})
+    else:
+        students = mongo.db.students.find()
+    return render_template('index.html', students=students)
 
 
 @app.route('/logout')
@@ -57,13 +66,15 @@ def create():
         email = request.form['email']
         phone = request.form['phone']
         course = request.form['course']
+        month = request.form['month']
 
-
+        
         mongo.db.students.insert_one({
             'name': name,
             'email': email,
             'phone': phone,
             'course': course,
+            'month':month,
             'admin_notes': ''
         })
         return redirect(url_for('index'))
@@ -79,25 +90,37 @@ def student(id):
 
     if request.method == 'POST':
         checklist_fields = [
-            'passport', 'marks_10th', 'marks_12th', 'degree_cert', 'masters_cert',
-            'ielts', 'resume', 'sop', 'bank_statement', 'experience',
-            'lor1', 'lor2', 'individual_markscard', 'consolidated_markscard', 'passport_size_photo'
+            'passport_size_photo', '10th_markscard', '12th_markscard', 'consolidated_markscard','individual_markscards', 'PDC', 'degree_certificate',
+                             'ielts', 'gre', 'gmat', 'passport', 'LOR1', 'LOR2', 'resume', 'SOP', 'bank_statement', 'experience'
         ]
 
         checklist = {field: field in request.form for field in checklist_fields}
 
         note_dates = request.form.getlist('note_date[]')
         note_texts = request.form.getlist('note_text[]')
+        
         note_entries = [
             {'date': d.strip(), 'text': t.strip()}
             for d, t in zip(note_dates, note_texts)
             if d.strip() or t.strip()
         ]
+         
+        imp_points = {'imp_notes' :request.form.get('imp_notes')}
+
 
         additional_fields = {
             'board_10th': request.form.get('board_10th', ''),
             'percent_10th': request.form.get('percent_10th', ''),
             'board_12th': request.form.get('board_12th', ''),
+            'yop_12': request.form.get('yop_12', ''),
+            'yop_10': request.form.get('yop_10', ''),
+            'yop_UG': request.form.get('yop_UG', ''),
+            'GRE': request.form.get('GRE', ''),
+            'GRE_dropdown': request.form.get('GRE_dropdown', ''),
+            'IELTS': request.form.get('IELTS', ''),
+            'IELTS_dropdown': request.form.get('IELTS_dropdown', ''),
+            'GMAT': request.form.get('GMAT', ''),
+            'GMAT_dropdown': request.form.get('GMAT_dropdown', ''),
             'percent_12th': request.form.get('percent_12th', ''),
             'english_12th': request.form.get('english_12th', ''),
             'cgpa': request.form.get('cgpa', ''),
@@ -111,7 +134,9 @@ def student(id):
         update_fields = {
             **checklist,
             **additional_fields,
-            'note_entries': note_entries
+            **imp_points,
+            'note_entries': note_entries,
+            
         }
 
         mongo.db.students.update_one(
@@ -125,5 +150,8 @@ def student(id):
 
 if __name__ == '__main__':
     #Uncomment below line once to create admin account
-    mongo.db.admins.insert_one({'username': 'admin', 'password': generate_password_hash('admin123')})
+    
+    mongo.db.admins.update_one(
+    {'username': 'admin'},  # Filter: find the document
+    {'$set': {'password': generate_password_hash('admin@123')}})
     app.run(debug=True)
