@@ -3,6 +3,16 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='uploads/dashboard.css') }}">
     <title>Student Dashboard</title>
+    <form method="GET" action="/dashboard">
+  <label for="month">Filter by Intake Month:</label>
+  <select name="month" id="month">
+    <option value="">All</option>
+    {% for m in ['January','February','March','April','May','June','July','August','September','October','November','December'] %}
+      <option value="{{ m }}" {% if request.args.get('month') == m %}selected{% endif %}>{{ m }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Filter</button>
+</form>
 </head>
 <body>
     <h1>All Student Profiles</h1>
@@ -10,7 +20,9 @@
     <ul>
         {% for student in students %}
         <li>
-            <strong>{{ student.name }}</strong> - {{ student.course }}
+            <strong>{{ student.name }}</strong>
+            <label >{{student.month}}</label>
+            <marquee >Reminder:  {{ student.imp_notes }}</marquee><br>
             <a href="/student/{{ student._id }}">View</a>
         </li>
         {% endfor %}
@@ -23,6 +35,8 @@
   </div>
   {% endif %}
 </header>
+
+
 
 </body>
 </html>

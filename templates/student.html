@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="{{ url_for('Static', filename='uploads/student.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='uploads/student.css') }}">
     <title>{{ student.name }}'s Profile</title>
     
 </head>
@@ -12,45 +12,51 @@
 <p>Phone: {{ student.phone }}</p>
 <p>Course: {{ student.course }}</p>
 <a href="/">Back to Home</a>
-<form method="POST">
 
+<form method="POST">
+    <br>
+    
+
+<div class="imp_notes" id="impNotesBox">
+    <button type="button" class="close-btn" onclick="closeNotes()">×</button>
+    
+    <textarea name="imp_notes" id="imp_notes" placeholder="Important_notes">{{ student.imp_notes }}</textarea>
+    
+    <button type="submit">Submit</button>
+</div>
+
+
+    
     <h3>Document Checklist</h3>
     <div class="checklist">
         <div class="checklist-row">
-            {% for field in ['passport', 'marks_10th', 'marks_12th', 'degree_cert', 'masters_cert',
-                             'ielts', 'resume', 'sop', 'bank_statement', 'experience',
-                             'lor1', 'lor2', 'individual_markscard', 'consolidated_markscard',
-                             'passport_size_photo'] %}
+            {% for field in ['passport_size_photo', '10th_markscard', '12th_markscard', 'consolidated_markscard','individual_markscards', 'PDC', 'degree_certificate',
+                             'ielts', 'gre', 'gmat', 'passport', 'LOR1', 'LOR2', 'resume', 'SOP', 'bank_statement', 'experience'] %}
                 <label>
                     <input type="checkbox" name="{{ field }}" {% if student[field] %}checked{% endif %}> 
                     {{ field.replace('_', ' ').title() }}
                 </label>
             {% endfor %}
         </div>
+        
     </div>
 
     <h3>Academic & Fee Details</h3>
     <div class="form-section">
 
+       
+
         <div class="form-row">
-            <label for="board_10th">10th Board:</label>
+            <label for="percent_10th">10th % / CGPA:</label>
+            <input type="number" name="percent_10th" id="percent_10th" value="{{ student.percent_10th }}">
             <select name="board_10th" id="board_10th">
                 {% for board in ['Select Board', 'State Board', 'CBSE', 'ICSE', 'NIOS'] %}
                     <option value="{{ board }}" {% if student.board_10th == board %}selected{% endif %}>{{ board }}</option>
                 {% endfor %}
             </select>
-        </div>
-
-        <div class="form-row">
-            <label for="percent_10th">10th % / CGPA:</label>
-            <input type="number" name="percent_10th" id="percent_10th" value="{{ student.percent_10th }}">
-        </div>
-
-        <div class="form-row">
-            <label for="board_12th">12th Board:</label>
-            <select name="board_12th" id="board_12th">
-                {% for board in ['Select Board', 'State Board', 'CBSE', 'ICSE', 'NIOS'] %}
-                    <option value="{{ board }}" {% if student.board_12th == board %}selected{% endif %}>{{ board }}</option>
+            <select name="yop_10" id="yop_10">
+                {% for year in range(1999, 2030) %}
+            <option value="{{ year }}" {% if student.yop_10 == year | string %}selected{% endif %}>{{ year }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -58,17 +64,25 @@
         <div class="form-row">
             <label for="percent_12th">12th % / CGPA:</label>
             <input type="number" name="percent_12th" id="percent_12th" value="{{ student.percent_12th }}">
+            <select name="board_12th" id="board_12th">
+                {% for board in ['Select Board', 'State Board', 'CBSE', 'ICSE', 'NIOS'] %}
+                    <option value="{{ board }}" {% if student.board_12th == board %}selected{% endif %}>{{ board }}</option>
+                {% endfor %}
+             </select>
+              <select name="yop_12" id="yop_12">
+                {% for year in range(1999, 2030) %}
+            <option value="{{ year }}" {% if student.yop_12 == year | string %}selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
         </div>
+       
 
         <div class="form-row">
             <label for="english_12th">12th English Marks:</label>
             <input type="number" name="english_12th" id="english_12th" value="{{ student.english_12th }}">
         </div>
 
-        <div class="form-row">
-            <label for="cgpa">Degree CGPA / %:</label>
-            <input type="number" name="cgpa" id="cgpa" value="{{ student.cgpa }}">
-        </div>
+       
 
         <div class="form-row">
             <label for="course_name">Course Name:</label>
@@ -76,7 +90,7 @@
         </div>
 
         <div class="form-row">
-            <label for="degree_name">Degree Name:</label>
+            <label for="degree_name">Domain:</label>
             <input type="text" name="degree_name" id="degree_name" value="{{ student.degree_name }}">
         </div>
 
@@ -84,7 +98,50 @@
             <label for="college_name">College Name:</label>
             <input type="text" name="college_name" id="college_name" value="{{ student.college_name }}">
         </div>
+         <div class="form-row">
+            <label for="cgpa">Degree CGPA / %:</label>
+            <input type="number" name="cgpa" id="cgpa" value="{{ student.cgpa }}">
 
+             <select name="yop_UG" id="yop_UG">
+                {% for year in range(1999, 2030) %}
+            <option value="{{ year }}" {% if student.yop_UG == year | string %}selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label for="GRE">GRE_Scorecard:</label>
+            <input type="text" name="GRE" id = "GRE" value="{{student.GRE}}">
+            <select name="GRE_dropdown" id="GRE_dropdown">
+                {% for GRE_dropdown in ['Select', 'Through LetzStudy', 'Other than LetzStudy']%}
+                <option value="{{ GRE_dropdown }}" {% if student.GRE_dropdown == GRE_dropdown %}selected{% endif %}>{{ GRE_dropdown }}</option>
+                 {% endfor %}           
+            </select>
+
+        </div>
+
+        
+        <div class="form-row">
+            <label for="IELTS">IELTS_Scorecard:</label>
+            <input type="text" name="IELTS" id = "IELTS" value="{{student.IELTS}}">
+            <select name="IELTS_dropdown" id="IELTS_dropdown">
+                {% for IELTS_dropdown in ['Select', 'Through LetzStudy', 'Other than LetzStudy']%}
+                <option value="{{ IELTS_dropdown }}" {% if student.IELTS_dropdown == IELTS_dropdown %}selected{% endif %}>{{ IELTS_dropdown }}</option>
+                 {% endfor %}           
+            </select>
+        </div>
+        
+        <div class="form-row">
+            <label for="GMAT">GMAT_Scorecard:</label>
+            <input type="text" name="GMAT" id = "GMAT" value="{{student.GMAT}}">
+            <select name="GMAT_dropdown" id="GMAT_dropdown">
+                {% for GMAT_dropdown in ['Select', 'Through LetzStudy', 'Other than LetzStudy']%}
+                <option value="{{ GMAT_dropdown }}" {% if student.GMAT_dropdown == GMAT_dropdown %}selected{% endif %}>{{ GMAT_dropdown }}</option>
+                {% endfor %}           
+            </select>
+        </div>
+        
+              
         <div class="form-row">
             <label for="paid_amount">Paid Amount (₹):</label>
             <input type="number" name="paid_amount" id="paid_amount" value="{{ student.paid_amount }}">
@@ -121,6 +178,14 @@
 
 </form>
 
+
+<div class="popup-overlay" id="overlay"></div>
+<div class="popup" id="popup">
+  <p id="popup-text"></p>
+  <button onclick="closePopup()">Close</button>
+</div>
+
+
 <a href="/">Back to Home</a>
 
 <script>
@@ -138,6 +203,9 @@ function removeNoteEntry(btn) {
     const entry = btn.parentElement;
     entry.remove();
 }
+function closeNotes() {
+    document.getElementById('impNotesBox').style.display = 'none';
+  }
 </script>
 
 </body>
