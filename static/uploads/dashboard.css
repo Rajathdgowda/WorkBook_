@@ -131,3 +131,56 @@ li a {
 li a:hover {
   background: #64b5f6;
 }
+
+
+/* Filter Form Styles */
+form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px 16px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  width: fit-content;
+}
+
+/* Dropdown Style */
+form select {
+  background-color: #1e293b;
+  color: #f1f5f9;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.95rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%f1f5f9' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px 16px;
+}
+
+/* Filter Button Style */
+form button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background: #2563eb;
+}
+
+/* Label for dropdown */
+form label {
+  font-weight: 500;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+}
