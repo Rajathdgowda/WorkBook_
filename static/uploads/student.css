@@ -91,8 +91,13 @@ h3 {
 }
 
 p {
-  font-size: 0.95rem;
-  margin: 0.3rem 0;
+  font-size: 1.2rem;
+  margin: 0.2rem ;
+}
+
+label {
+  font-size: 0.99rem;
+  margin: 0.2rem ;
 }
 
 /* FORM ROWS */
@@ -172,8 +177,8 @@ input[type="submit"]:hover {
 
 /* Checklist Styling */
 .checklist {
-  display: flex;
-  flex-direction: column;
+  display:-moz-box;
+  flex-direction:column;
   gap: 16px;
   margin-bottom: 20px;
 }
@@ -185,14 +190,14 @@ input[type="submit"]:hover {
 }
 
 .checklist label {
-  display: flex;
+  display:ruby;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
   background-color: #1e293b;
   padding: 6px 12px;
   border-radius: 6px;
   color: #e2e8f0;
-  font-size: 0.88rem;
+  font-size: 1rem;
 }
 
 /* Notes Section */
