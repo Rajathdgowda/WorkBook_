@@ -6,41 +6,68 @@
     
 </head>
 <body>
-
+    
 <h1>{{ student.name }}</h1>
-<p>Email: {{ student.email }}</p>
-<p>Phone: {{ student.phone }}</p>
-<p>Course: {{ student.course }}</p>
+<label>Email: {{ student.email }} | Phone: {{ student.phone }} </label>
+<p>Intake: {{student.month}}</p>
 <a href="/">Back to Home</a>
 
+
+
+
+
+
+
+
+
+
 <form method="POST">
-    <br>
-    
-
-<div class="imp_notes" id="impNotesBox">
-    <button type="button" class="close-btn" onclick="closeNotes()">×</button>
-    
-    <textarea name="imp_notes" id="imp_notes" placeholder="Important_notes">{{ student.imp_notes }}</textarea>
-    
-    <button type="submit">Submit</button>
-</div>
+  <!-- Important Notes -->
+  <div class="imp_notes" id="impNotesBox">
+      <button type="button" class="close-btn" onclick="closeNotes()">×</button>
+      <textarea name="imp_notes" id="imp_notes" placeholder="Important_notes">{{ student.imp_notes }}</textarea>
+      <button type="submit">Submit</button>
+  </div>
 
 
-    
-    <h3>Document Checklist</h3>
+  
+
+  <!-- ... Your checklist and academic fields remain unchanged ... -->
+  <h3>Document Checklist</h3>
     <div class="checklist">
         <div class="checklist-row">
-            {% for field in ['passport_size_photo', '10th_markscard', '12th_markscard', 'consolidated_markscard','individual_markscards', 'PDC', 'degree_certificate',
-                             'ielts', 'gre', 'gmat', 'passport', 'LOR1', 'LOR2', 'resume', 'SOP', 'bank_statement', 'experience'] %}
+            {% for field in [ '10th_Markscard', '12th_Markscard', 'Individual_Markscards', 'Consolidated_Markscard', 'PDC', 'Degree_Certificate','Passport', 
+             'Resume', 'LOR1', 'LOR2','SOP','Passport_size_photo',  'Bank_Statement', 'Experience', 'IELTS', 'GRE', 'GMAT' ] %}
                 <label>
                     <input type="checkbox" name="{{ field }}" {% if student[field] %}checked{% endif %}> 
-                    {{ field.replace('_', ' ').title() }}
+                    {{ field.replace('_', ' ') }}
+
                 </label>
             {% endfor %}
         </div>
-        
+        <button type ="submit">Save</button>
     </div>
 
+
+    <!-- University Dropdown Section -->
+  <h3>Select University</h3>
+  <div class="dropdown-wrapper">
+    <input type="text" id="searchBox" placeholder="Type university name..."> 
+    <label >{{ student.university_name}} | {{student.university_country }} | {{student.university_groups}}</label>
+    <input type="hidden" name="university_name" id="university_name">
+    <input type="hidden" name="university_country" id="university_country">
+    <input type="hidden" name="university_groups" id="university_groups">
+    <div class="dropdown-list" id="dropdown"></div>
+  </div>
+
+  <div class="selected-info" id="infoBox" style="display:none;">
+    <strong>University:</strong> <span id="univName"></span><br>
+    <strong>Country:</strong> <span id="countryName"></span><br>
+    <strong>Group(s):</strong> <span id="groupNames"></span>
+  </div>
+  
+
+  
     <h3>Academic & Fee Details</h3>
     <div class="form-section">
 
@@ -50,26 +77,33 @@
             <label for="percent_10th">10th % / CGPA:</label>
             <input type="number" name="percent_10th" id="percent_10th" value="{{ student.percent_10th }}">
             <select name="board_10th" id="board_10th">
-                {% for board in ['Select Board', 'State Board', 'CBSE', 'ICSE', 'NIOS'] %}
+                <option value="" disabled {% if not student.board_10th %}selected{% endif %}>Select Board</option>
+                {% for board in [ 'State Board', 'CBSE', 'ICSE', 'NIOS'] %}
                     <option value="{{ board }}" {% if student.board_10th == board %}selected{% endif %}>{{ board }}</option>
                 {% endfor %}
             </select>
+            
+
             <select name="yop_10" id="yop_10">
-                {% for year in range(1999, 2030) %}
-            <option value="{{ year }}" {% if student.yop_10 == year | string %}selected{% endif %}>{{ year }}</option>
-                {% endfor %}
+          <option value="" disabled {% if not student.yop_10 %}selected{% endif %}>Select YOP</option>
+             {% for year in range(1999, 2030) %}
+            <option value="{{ year }}" {% if student.yop_10 == year|string %}selected{% endif %}>{{ year }}</option>
+            {% endfor %}
             </select>
+
         </div>
 
         <div class="form-row">
             <label for="percent_12th">12th % / CGPA:</label>
             <input type="number" name="percent_12th" id="percent_12th" value="{{ student.percent_12th }}">
             <select name="board_12th" id="board_12th">
+                 <option value="" disabled {% if not student.board_12th %}selected{% endif %}>Select Board</option>
                 {% for board in ['Select Board', 'State Board', 'CBSE', 'ICSE', 'NIOS'] %}
                     <option value="{{ board }}" {% if student.board_12th == board %}selected{% endif %}>{{ board }}</option>
                 {% endfor %}
              </select>
               <select name="yop_12" id="yop_12">
+                <option value="" disabled {% if not student.yop_12 %}selected{% endif %}>Select YOP</option>
                 {% for year in range(1999, 2030) %}
             <option value="{{ year }}" {% if student.yop_12 == year | string %}selected{% endif %}>{{ year }}</option>
                 {% endfor %}
@@ -90,7 +124,7 @@
         </div>
 
         <div class="form-row">
-            <label for="degree_name">Domain:</label>
+            <label for="degree_name">Domain/Branch:</label>
             <input type="text" name="degree_name" id="degree_name" value="{{ student.degree_name }}">
         </div>
 
@@ -103,6 +137,7 @@
             <input type="number" name="cgpa" id="cgpa" value="{{ student.cgpa }}">
 
              <select name="yop_UG" id="yop_UG">
+                 <option value="" disabled {% if not student.yop_UG %}selected{% endif %}>Select YOP</option>
                 {% for year in range(1999, 2030) %}
             <option value="{{ year }}" {% if student.yop_UG == year | string %}selected{% endif %}>{{ year }}</option>
                 {% endfor %}
@@ -111,9 +146,10 @@
 
         <div class="form-row">
             <label for="GRE">GRE_Scorecard:</label>
-            <input type="text" name="GRE" id = "GRE" value="{{student.GRE}}">
+            <input type="text" name="GRE" id = "GRE"  placeholder="Overall Score" value="{{student.GRE}}">
             <select name="GRE_dropdown" id="GRE_dropdown">
-                {% for GRE_dropdown in ['Select', 'Through LetzStudy', 'Other than LetzStudy']%}
+                <option value="" disabled {% if not student.GRE_dropdown %}selected{% endif %}>Select</option>
+                {% for GRE_dropdown in [ 'Through LetzStudy', 'Other than LetzStudy']%}
                 <option value="{{ GRE_dropdown }}" {% if student.GRE_dropdown == GRE_dropdown %}selected{% endif %}>{{ GRE_dropdown }}</option>
                  {% endfor %}           
             </select>
@@ -123,9 +159,10 @@
         
         <div class="form-row">
             <label for="IELTS">IELTS_Scorecard:</label>
-            <input type="text" name="IELTS" id = "IELTS" value="{{student.IELTS}}">
+            <input type="text" name="IELTS" id = "IELTS" placeholder="Overall Score" value="{{student.IELTS}}">
             <select name="IELTS_dropdown" id="IELTS_dropdown">
-                {% for IELTS_dropdown in ['Select', 'Through LetzStudy', 'Other than LetzStudy']%}
+                <option value="" disabled {% if not student.IELTS_dropdown %}selected{% endif %}>Select</option>
+                {% for IELTS_dropdown in [ 'Through LetzStudy', 'Other than LetzStudy']%}
                 <option value="{{ IELTS_dropdown }}" {% if student.IELTS_dropdown == IELTS_dropdown %}selected{% endif %}>{{ IELTS_dropdown }}</option>
                  {% endfor %}           
             </select>
@@ -133,9 +170,10 @@
         
         <div class="form-row">
             <label for="GMAT">GMAT_Scorecard:</label>
-            <input type="text" name="GMAT" id = "GMAT" value="{{student.GMAT}}">
+            <input type="text" name="GMAT" id = "GMAT"  placeholder="Overall Score" value="{{student.GMAT}}">
             <select name="GMAT_dropdown" id="GMAT_dropdown">
-                {% for GMAT_dropdown in ['Select', 'Through LetzStudy', 'Other than LetzStudy']%}
+                <option value="" disabled {% if not student.GMAT_dropdown %}selected{% endif %}>Select</option>
+                {% for GMAT_dropdown in [ 'Through LetzStudy', 'Other than LetzStudy']%}
                 <option value="{{ GMAT_dropdown }}" {% if student.GMAT_dropdown == GMAT_dropdown %}selected{% endif %}>{{ GMAT_dropdown }}</option>
                 {% endfor %}           
             </select>
@@ -154,42 +192,88 @@
         <input type="submit" value="Save All">
     </div>
 
-    <h3>Admin Notes with Calendar</h3>
-    <div id="note-calendar-wrapper">
-        {% for note in student.note_entries or [] %}
-        <div class="note-entry">
-            <input type="date" name="note_date[]" value="{{ note.date }}">
-            <textarea name="note_text[]">{{ note.text }}</textarea>
-            <button type="button" onclick="removeNoteEntry(this)">🗑</button>
-        </div>
-        {% endfor %}
-        {% if not student.note_entries %}
-        <div class="note-entry">
-            <input type="date" name="note_date[]">
-            <textarea name="note_text[]"></textarea>
-            <button type="button" onclick="removeNoteEntry(this)">🗑</button>
-        </div>
-        {% endif %}
-    </div>
 
-    <button type="button" onclick="addNoteEntry()">+ Add More Notes</button><br><br>
+    
+  
+  
+  <!-- Admin Notes -->
+  <h3>Admin Notes with Calendar</h3>
+  <div id="note-calendar-wrapper">
+      {% for note in student.note_entries or [] %}
+      <div class="note-entry">
+          <input type="date" name="note_date[]" value="{{ note.date }}">
+          <textarea name="note_text[]">{{ note.text }}</textarea>
+          <button type="button" onclick="removeNoteEntry(this)">🗑</button>
+      </div>
+      {% endfor %}
+      {% if not student.note_entries %}
+      <div class="note-entry">
+          <input type="date" name="note_date[]">
+          <textarea name="note_text[]"></textarea>
+          <button type="button" onclick="removeNoteEntry(this)">🗑</button>
+      </div>
+      {% endif %}
+  </div>
 
-    <input type="submit" value="Save All">
+  <button type="button" onclick="addNoteEntry()">+ Add More Notes</button><br><br>
 
+  <input type="submit" value="Save All">
 </form>
 
 
-<div class="popup-overlay" id="overlay"></div>
-<div class="popup" id="popup">
-  <p id="popup-text"></p>
-  <button onclick="closePopup()">Close</button>
-</div>
-
-
-<a href="/">Back to Home</a>
 
 <script>
-function addNoteEntry() {
+  const searchBox = document.getElementById('searchBox');
+  const dropdown = document.getElementById('dropdown');
+  const infoBox = document.getElementById('infoBox');
+  const univName = document.getElementById('univName');
+  const countryName = document.getElementById('countryName');
+  const groupNames = document.getElementById('groupNames');
+
+  const hiddenUnivName = document.getElementById('university_name');
+  const hiddenCountry = document.getElementById('university_country');
+  const hiddenGroups = document.getElementById('university_groups');
+
+  searchBox.addEventListener('input', () => {
+    const query = searchBox.value.trim();
+    dropdown.innerHTML = '';
+    if (query.length < 2) return;
+
+    fetch(`/search?term=${query}`)
+      .then(res => res.json())
+      .then(data => {
+        data.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'dropdown-item';
+          div.innerHTML = `<strong>${item.name}</strong>
+              <div class="item-details">Country: ${item.country} | Groups: ${item.groups.join(', ')}</div>`;
+          
+          div.onclick = () => {
+            searchBox.value = item.name;
+            dropdown.innerHTML = '';
+            univName.textContent = item.name;
+            countryName.textContent = item.country;
+            groupNames.textContent = item.groups.join(', ');
+            infoBox.style.display = 'block';
+
+            // Populate hidden inputs
+            hiddenUnivName.value = item.name;
+            hiddenCountry.value = item.country;
+            hiddenGroups.value = item.groups.join(', ');
+          };
+
+          dropdown.appendChild(div);
+        });
+      });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.dropdown-wrapper')) {
+      dropdown.innerHTML = '';
+    }
+  });
+
+  function addNoteEntry() {
     const wrapper = document.getElementById('note-calendar-wrapper');
     const entry = document.createElement('div');
     entry.className = 'note-entry';
@@ -198,15 +282,14 @@ function addNoteEntry() {
         <textarea name="note_text[]"></textarea>
         <button type="button" onclick="removeNoteEntry(this)">🗑</button>`;
     wrapper.appendChild(entry);
-}
-function removeNoteEntry(btn) {
+  }
+
+  function removeNoteEntry(btn) {
     const entry = btn.parentElement;
     entry.remove();
-}
-function closeNotes() {
+  }
+
+  function closeNotes() {
     document.getElementById('impNotesBox').style.display = 'none';
   }
 </script>
-
-</body>
-</html>

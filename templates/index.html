@@ -7,7 +7,7 @@
   <label for="month">Filter by Intake Month:</label>
   <select name="month" id="month">
     <option value="">All</option>
-    {% for m in ['January','February','March','April','May','June','July','August','September','October','November','December'] %}
+    {% for m in ['Jan/Feb/Mar 2026','April/May/June/July 2026', 'Aug/Sep/Oct 2025'] %}
       <option value="{{ m }}" {% if request.args.get('month') == m %}selected{% endif %}>{{ m }}</option>
     {% endfor %}
   </select>
