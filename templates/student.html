@@ -145,8 +145,8 @@
         </div>
 
         <div class="form-row">
-            <label for="GRE">GRE_Scorecard:</label>
-            <input type="text" name="GRE" id = "GRE"  placeholder="Overall Score" value="{{student.GRE}}">
+            <label for="GRE_marks">GRE_Scorecard:</label>
+            <input type="text" name="GRE_marks" id = "GRE_marks"  placeholder="Overall Score" value="{{student.GRE_marks}}">
             <select name="GRE_dropdown" id="GRE_dropdown">
                 <option value="" disabled {% if not student.GRE_dropdown %}selected{% endif %}>Select</option>
                 {% for GRE_dropdown in [ 'Through LetzStudy', 'Other than LetzStudy']%}
@@ -158,8 +158,8 @@
 
         
         <div class="form-row">
-            <label for="IELTS">IELTS_Scorecard:</label>
-            <input type="text" name="IELTS" id = "IELTS" placeholder="Overall Score" value="{{student.IELTS}}">
+            <label for="IELTS_marks">IELTS_Scorecard:</label>
+            <input type="text" name="IELTS_marks" id = "IELTS_marks" placeholder="Overall Score" value="{{student.IELTS_marks}}">
             <select name="IELTS_dropdown" id="IELTS_dropdown">
                 <option value="" disabled {% if not student.IELTS_dropdown %}selected{% endif %}>Select</option>
                 {% for IELTS_dropdown in [ 'Through LetzStudy', 'Other than LetzStudy']%}
@@ -169,8 +169,8 @@
         </div>
         
         <div class="form-row">
-            <label for="GMAT">GMAT_Scorecard:</label>
-            <input type="text" name="GMAT" id = "GMAT"  placeholder="Overall Score" value="{{student.GMAT}}">
+            <label for="GMAT_marks">GMAT_Scorecard:</label>
+            <input type="text" name="GMAT_marks" id = "GMAT_marks"  placeholder="Overall Score" value="{{student.GMAT_marks}}">
             <select name="GMAT_dropdown" id="GMAT_dropdown">
                 <option value="" disabled {% if not student.GMAT_dropdown %}selected{% endif %}>Select</option>
                 {% for GMAT_dropdown in [ 'Through LetzStudy', 'Other than LetzStudy']%}
